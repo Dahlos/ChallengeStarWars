@@ -5,6 +5,7 @@ import android.os.Bundle
 import android.util.Log
 import androidx.activity.viewModels
 import androidx.lifecycle.Observer
+import androidx.recyclerview.widget.LinearLayoutManager
 import com.dahlos.challengestarwars.core.Result
 import com.dahlos.challengestarwars.core.RetrofitClient
 import com.dahlos.challengestarwars.data.remote.CharacterProvider
@@ -12,6 +13,7 @@ import com.dahlos.challengestarwars.databinding.ActivityMainBinding
 import com.dahlos.challengestarwars.presentation.viewmodel.CharacterViewModel
 import com.dahlos.challengestarwars.presentation.viewmodel.CharacterViewModelFactory
 import com.dahlos.challengestarwars.repository.CharacterRepositoryImpl
+import com.dahlos.challengestarwars.ui.adapters.CharacterAdapter
 
 class MainActivity : AppCompatActivity() {
     private lateinit var binding: ActivityMainBinding
@@ -35,6 +37,9 @@ class MainActivity : AppCompatActivity() {
                 }
                 is Result.Success -> {
                     Log.v("MainActivity Success", result.data.results[0].name)
+                    val manager = LinearLayoutManager(this)
+                    binding.rvCharacterList.layoutManager = manager
+                    binding.rvCharacterList.adapter = CharacterAdapter(result.data.results)
                 }
                 is Result.Failure -> {
                     Log.v("MainActivity Failure", "${result.exception}")
